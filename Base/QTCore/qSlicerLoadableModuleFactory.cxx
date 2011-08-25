@@ -58,6 +58,16 @@ qSlicerAbstractCoreModule* qSlicerLoadableModuleFactoryItem::instanciator()
     if (qSlicerCoreApplication::application()->isExtension(module->path()))
       {
       QString modulePath = QFileInfo(module->path()).path();
+	  QString intDir = qSlicerCoreApplication::application()->intDir();
+	  QString modulePathDirName = QDir(modulePath).dirName();
+
+	  if(intDir.compare(modulePathDirName) == 0)
+	  {
+		QDir moduleDir = QDir(modulePath);
+		moduleDir.cdUp();
+		modulePath = moduleDir.absolutePath();
+	  }
+
       QString pythonPath = modulePath + "/Python";
       QStringList paths; paths << modulePath << pythonPath;
       qSlicerCorePythonManager * pythonManager = qSlicerCoreApplication::application()->corePythonManager();
